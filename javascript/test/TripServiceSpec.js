@@ -17,35 +17,41 @@ describe('TripService', () => {
     });
 
     it('should_Not_Return_Trips_When_Logged_User_Are_Not_Friend', () => {
-        const user = new User()
-        class TestableTripService extends TripService {
-            getLoggedUser() {
-                return user
-            }
-            getFriendsByUser() {
+        class TestableUser extends User {
+            getFriends() {
                 return []
             }
         }
+        const targetUser = new TestableUser()
+        const me = new User()
+        class TestableTripService extends TripService {
+            getLoggedUser() {
+                return me
+            }
+        }
         const tripService = new TestableTripService()
-        assert.equal(tripService.getTripsByUser(user).length, 0);
+        assert.equal(tripService.getTripsByUser(targetUser).length, 0);
     });
 
     it('should_Return_Trips_When_Logged_User_Are_Friend', () => {
         class Trip { }
-        const user = new User()
+        class TestableUser extends User {
+            getFriends() {
+                return [me]
+            }
+        }
+        const targetUser = new TestableUser()
+        const me = new User()
         class TestableTripService extends TripService {
             getLoggedUser() {
-                return user
-            }
-            getFriendsByUser(user) {
-                return [user]
+                return me
             }
             findTripsByUser(user) {
                 return [new Trip(), new Trip()]
             }
         }
         const tripService = new TestableTripService()
-        assert.equal(tripService.getTripsByUser(user).length, 2);
+        assert.equal(tripService.getTripsByUser(targetUser).length, 2);
     });
 
 });
