@@ -18,7 +18,7 @@ class TripService {
                 }
             };
             if (isFriend) {
-                tripList = TripDAO.findTripsByUser(user);
+                tripList = this.findTripsByUser(user)
             }
             return tripList;
         } else {
@@ -32,6 +32,10 @@ class TripService {
     getFriendsByUser(user) {
         const friends = user.getFriends();
         return friends
+    }
+    findTripsByUser(user) {
+        const tripList = TripDAO.findTripsByUser(user);
+        return tripList
     }
 }
 

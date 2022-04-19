@@ -30,8 +30,22 @@ describe('TripService', () => {
         assert.equal(tripService.getTripsByUser(user).length, 0);
     });
 
-    xit('should_Return_Trips_When_Logged_User_Are_Friend', () => {
-        assert.equal();
+    it('should_Return_Trips_When_Logged_User_Are_Friend', () => {
+        class Trip { }
+        const user = new User()
+        class TestableTripService extends TripService {
+            getLoggedUser() {
+                return user
+            }
+            getFriendsByUser(user) {
+                return [user]
+            }
+            findTripsByUser(user) {
+                return [new Trip(), new Trip()]
+            }
+        }
+        const tripService = new TestableTripService()
+        assert.equal(tripService.getTripsByUser(user).length, 2);
     });
 
 });
