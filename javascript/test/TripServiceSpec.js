@@ -2,6 +2,7 @@
 
 let assert = require('assert');
 let TripService = require('../src/TripService');
+let User = require('../src/User');
 
 describe('TripService', () => {
 
@@ -15,8 +16,18 @@ describe('TripService', () => {
         assert.throws(tripService.getTripsByUser, Error, 'User not logged in.');
     });
 
-    xit('should_Not_Return_Trips_When_Logged_User_Are_Not_Friend', () => {
-        assert.equal();
+    it('should_Not_Return_Trips_When_Logged_User_Are_Not_Friend', () => {
+        const user = new User()
+        class TestableTripService extends TripService {
+            getLoggedUser() {
+                return user
+            }
+            getFriendsByUser() {
+                return []
+            }
+        }
+        const tripService = new TestableTripService()
+        assert.equal(tripService.getTripsByUser(user).length, 0);
     });
 
     xit('should_Return_Trips_When_Logged_User_Are_Friend', () => {

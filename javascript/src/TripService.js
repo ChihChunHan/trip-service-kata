@@ -9,7 +9,7 @@ class TripService {
         let loggedUser = this.getLoggedUser()
         let isFriend = false;
         if (loggedUser != null) {
-            let friends = user.getFriends();
+            let friends = this.getFriendsByUser(user)
             for (let i = 0; i < friends.length; i++) {
                 let friend = friends[i];
                 if (friend == loggedUser) {
@@ -28,6 +28,10 @@ class TripService {
     getLoggedUser() {
         const loggedUser = UserSession.getLoggedUser();
         return loggedUser
+    }
+    getFriendsByUser(user) {
+        const friends = user.getFriends();
+        return friends
     }
 }
 
